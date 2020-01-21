@@ -2,6 +2,7 @@ import requests, json, urllib, time
 from contact import Contact
 from build_params import build_parameters
 from sheets_business_layer import write_contact_to_sheets, get_contacts_from_sheets
+from gspread import exceptions as gsexceptions
 
 # hubspot api request config
 max_results = 10000
@@ -48,7 +49,12 @@ for idx, contact in enumerate(mql_list):
     formatted_mql_datetime = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(int(became_mql_date_unformatted) / 1000.0))
     became_mql_date = formatted_mql_datetime.split(' ')[0]
     new_contact = Contact(first_name, last_name, email, became_mql_date)
-    write_contact_to_sheets(new_contact)
+    try:
+        write_contact_to_sheets(new_contact)
+    except gsexceptions.APIError:
+        time.sleep(60)
+        continue
+
     # if idx > 10:
     #     break
 

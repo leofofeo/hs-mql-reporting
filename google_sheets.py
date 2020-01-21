@@ -58,7 +58,6 @@ def write_contact_to_sheets(contact):
     # update formula column (column F)
     sheet.update_acell(col_coords[5], f"=DAYS(E{row_number}, D{row_number})")
 
-
 # get_row_count(sheet)
 # print(get_next_available_row(sheet))
 # date_last_week = date(2020, 1, 10)
