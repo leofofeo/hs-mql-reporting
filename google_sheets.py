@@ -14,7 +14,8 @@ client = gspread.authorize(creds)
 # Make sure you use the right name here.
 sheet_name = get_spreadsheet_name()
 sheet = client.open(sheet_name).sheet1
-
+starting_from_zero = True
+next_available_row = 1
 
 def get_sheet_records():
     list_of_hashes = sheet.get_all_records()
@@ -25,14 +26,17 @@ def get_row_count(sheet):
     print(sheet.row_count)
 
 def get_next_available_row(sheet):
-    str_list = list(filter(None, sheet.col_values(1)))
+    if starting_from_zero:
+        return str(next_available_row)
+    else:
+        str_list = list(filter(None, sheet.col_values(1)))
     return str(len(str_list) + 1)
 
 def write_contact_to_sheets(contact):
     row_number = get_next_available_row(sheet)
     columns = ['A', 'B', 'C', 'D', 'E', 'F']
     col_coords = [col + row_number for col in columns]
-    
+
     time.sleep(0.5)
     # update first name (column A)
     sheet.update_acell(col_coords[0], contact.first_name)
@@ -47,7 +51,6 @@ def write_contact_to_sheets(contact):
 
     time.sleep(0.5)
     # update MQL date (column D)
-    print(contact.mql_date)
     sheet.update_acell(col_coords[3], str(contact.mql_date))
 
     time.sleep(0.5)
@@ -57,6 +60,9 @@ def write_contact_to_sheets(contact):
     time.sleep(0.5)
     # update formula column (column F)
     sheet.update_acell(col_coords[5], f"=DAYS(E{row_number}, D{row_number})")
+
+    print(f'Contact {contact.email} recorded'
+    next_available_row += 1
 
 # get_row_count(sheet)
 # print(get_next_available_row(sheet))

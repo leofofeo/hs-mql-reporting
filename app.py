@@ -35,6 +35,7 @@ for contact in contact_list:
     if contact['properties']['lifecyclestage']['value'] == 'marketingqualifiedlead':
         mql_list.append(contact)
 
+print(f"You've successfully parsed through {len(mql_list)} MQL records and added them to a list")
 for idx, contact in enumerate(mql_list):
     email = ''
     first_name = ''
@@ -58,4 +59,4 @@ for idx, contact in enumerate(mql_list):
     # if idx > 10:
     #     break
 
-contacts = get_contacts_from_sheets()
+print('Done with report')
