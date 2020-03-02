@@ -63,9 +63,3 @@ def write_contact_to_sheets(contact):
 
     print(f'Contact {contact.email} recorded'
     next_available_row += 1
-
-# get_row_count(sheet)
-# print(get_next_available_row(sheet))
-# date_last_week = date(2020, 1, 10)
-# c = Contact('Dustin', 'Drees', 'ddrees@square2marketing.com', date_last_week)
-# write_contact_to_sheets(c)
